@@ -18,13 +18,18 @@ async function save() {
     localStorage.setItem('luan_categories', JSON.stringify(categories));
     
     try {
-        await fetch('/api/sync', {
+        const res = await fetch('/api/sync', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ products, categories, pass: 'luan2024' })
         });
+        if (!res.ok) {
+            const errData = await res.text();
+            throw new Error(`Server error: ${res.status} - ${errData}`);
+        }
     } catch(e) {
         console.error("Error sincronizando db:", e);
+        throw e;
     }
 }
 
