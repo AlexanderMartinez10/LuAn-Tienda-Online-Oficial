@@ -1,0 +1,34 @@
+{
+  "categories": [
+    "Relojes",
+    "Carteras",
+    "Mochilas",
+    "Anteojos"
+  ],
+  "products": [
+    {
+      "cat": "Relojes",
+      "name": "Reloj Cronos Gold",
+      "desc": "Acabado en oro de 18k con correa de cuero italiano.",
+      "price": 85000,
+      "stock": 5,
+      "img": "https://images.unsplash.com/photo-1524592091214-8c97af7c6a9c?q=80&w=600"
+    },
+    {
+      "cat": "Carteras",
+      "name": "Bolso Elegance Rose",
+      "desc": "Cuero genuino color rosa pastel con detalles dorados.",
+      "price": 42000,
+      "stock": 3,
+      "img": "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=600"
+    },
+    {
+      "cat": "Mochilas",
+      "name": "Mochila Urban Style",
+      "desc": "Diseño minimalista impermeable para laptop y accesorios.",
+      "price": 28500,
+      "stock": 10,
+      "img": "https://images.unsplash.com/photo-1553062407-98eeb94c6a62?q=80&w=600"
+    }
+  ]
+}

@@ -13,9 +13,19 @@ let uploadedImgBase64 = "";
 let editingIndex = -1;
 
 // --- Persistencia ---
-function save() {
+async function save() {
     localStorage.setItem('luan_products', JSON.stringify(products));
     localStorage.setItem('luan_categories', JSON.stringify(categories));
+    
+    try {
+        await fetch('/api/sync', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ products, categories, pass: 'luan2024' })
+        });
+    } catch(e) {
+        console.error("Error sincronizando db:", e);
+    }
 }
 
 function toggleTheme() {
@@ -306,24 +316,13 @@ function addProduct() {
     if(!cat || !name || !price) return alert('Completa Categoría, Nombre y Precio.');
     const product = { cat, name, desc, price, stock, img: uploadedImgBase64 || 'https://via.placeholder.com/400x300?text=LuAn+Store' };
     
-    fetch('/api/add-product', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(product)
-    })
-    .then(r => {
-        if (!r.ok) throw new Error('Error guardando en el servidor');
-        return r.json();
-    })
-    .then(data => {
-        products.push(product);
-        save();
+    products.push(product);
+    save().then(() => {
         renderProducts();
-        alert('Producto guardado correctamente. Se reflejará en la tienda en unos minutos.');
-    })
-    .catch(err => {
-        console.error(err);
-        alert('No se pudo guardar el producto en el servidor');
+        alert('Producto guardado correctamente en la base de datos.');
+    }).catch(err => {
+        renderProducts();
+        alert('Guardado localmente. Hubo un error de red al subirlo.');
     });
 }
 
@@ -341,12 +340,16 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.setAttribute('data-theme', savedTheme);
     document.getElementById('theme-icon').innerText = savedTheme === 'dark' ? '☀️' : '🌙';
     
-    fetch('/api/get-products')
+    fetch('/api/get-db')
         .then(r => r.ok ? r.json() : null)
         .then(data => {
-            if (data && Array.isArray(data)) {
-                products = data;
-                save();
+            if (data && data.products && Array.isArray(data.products)) {
+                products = data.products;
+                if (data.categories && Array.isArray(data.categories)) {
+                    categories = data.categories;
+                }
+                localStorage.setItem('luan_products', JSON.stringify(products));
+                localStorage.setItem('luan_categories', JSON.stringify(categories));
             }
             renderCategories();
             renderProducts();

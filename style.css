@@ -664,7 +664,14 @@ input:focus, textarea:focus, select:focus {
 }
 
 /* Responsive */
-@media (max-width: 600px) {
+@media (max-width: 768px) {
     .hero h1 { font-size: 2.5rem; }
-    header { padding: 10px 2%; }
+    .slogan { font-size: 1.3rem; }
+    header { padding: 10px 5%; }
+    .admin-grid { grid-template-columns: 1fr; }
+    .admin-grid textarea, .admin-grid .add, .admin-grid .file-upload, .admin-grid > div { grid-column: span 1 !important; }
+    .modal-content { padding: 25px; margin: 5% auto; width: 95%; max-height: 85vh; }
+    .container { grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+    .cart-drawer { width: 100%; max-width: none; right: -100%; }
+    .social-links { gap: 15px; }
 }
